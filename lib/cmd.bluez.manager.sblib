@@ -1,0 +1,48 @@
+Sub inqHelp()
+	 
+	PRINT "Usage:\n"
+	PRINT "inq [--length=N] maximum inquiry duration in 1.28 s units\n"
+	PRINT "		[--numrsp=N] specify maximum number of inquiry responses\n"
+	PRINT "		[--iac=lap]  specify the inquiry access code\n"
+	PRINT "		[--flush]    flush the inquiry cache\n"
+
+EndSub
+//-------------------------------------------------------------------------
+//#CMD#//  inquiry config #INTcfgID# #INTvalue#
+//#CMD#//  inquiry start #INTinqTimeoutS#
+//#CMD#//  inquiry cancel
+//-------------------------------------------------------------------------
+function _inquiry()  
+    tlen = ExtractStrToken(urtcmd$,tkn$)
+    if tlen == 0 then
+        exitfunc BtcInquiryStart(30)
+    endif
+    
+    //if strcmp(tkn$,"cancel")==0 then
+    //    //cancel the inquiry
+    //    exitfunc BtcInquiryCancel()
+    //endif
+    
+	if strcmp(tkn$,"help")==0 then
+		//print the inquiry help menu
+		inqHelp()
+	endif
+	
+    //if strcmp(tkn$,"config")==0 then
+        //extract 2 : (cfgID value) and store starting at i[1]
+    //    rc = ExtractIntTokens(urtcmd$,1,2)
+    //    if rc != 0 then
+    //        exitfunc rc
+    //    endif
+    //    exitfunc BtcInquiryConfig(i[1],i[2])  
+    //endif
+    
+	if strcmp(tkn$,"start")==0 then
+        //extract 1 : (inqTimeoutS) and store starting at i[1]
+        rc = ExtractIntTokens(urtcmd$,1,1)
+        if rc != 0 then
+            exitfunc rc
+        endif
+        exitfunc BtcInquiryStart(i[1])
+    endif
+endfunc 5
